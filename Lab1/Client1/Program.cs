@@ -18,9 +18,7 @@ namespace Client1
             var portToConnect = int.Parse(args[1]);
             _rpc.Connect(portToConnect);
 
-            Thread thread = new Thread(_rpc.GetRequest);
-            thread.IsBackground = true;
-            thread.Start();
+            _rpc.GetRequest();
         }
     }
 }

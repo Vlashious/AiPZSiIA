@@ -76,6 +76,11 @@ namespace Library
         {
             var client = _listener.AcceptSocket();
             var span = Span<byte>.Empty;
+            while(client.Available == 0)
+            {
+
+            };
+            
             client.Receive(span);
             if (span.Length > 0)
             {
