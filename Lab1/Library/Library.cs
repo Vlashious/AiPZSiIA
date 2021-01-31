@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Library
 {
@@ -52,7 +53,7 @@ namespace Library
         {
             var stream = _client.GetStream();
 
-            var json = JsonSerializer.Serialize(objToSend);
+            var json = JsonConvert.SerializeObject(objToSend);
             var data = Encoding.UTF8.GetBytes(json);
             ReadOnlySpan<byte> span = data;
             stream.Write(span);
@@ -61,12 +62,16 @@ namespace Library
 
         public Response GetResponse()
         {
-            var stream = _listener.AcceptTcpClient().GetStream();
+            var client = _listener.AcceptSocket();
+            while (client.Available == 0)
+            {
+                
+            }
 
-            var span = Span<byte>.Empty;
-            stream.Read(span);
+            var span = new Span<byte>(new byte[client.Available]);
+            client.Receive(span);
             var json = Encoding.UTF8.GetString(span);
-            var response = JsonSerializer.Deserialize<Response>(json);
+            var response = JsonConvert.DeserializeObject<Response>(json);
             Console.WriteLine($"<-- {response}");
 
             return response;
@@ -75,25 +80,27 @@ namespace Library
         public void GetRequest()
         {
             var client = _listener.AcceptSocket();
-            var span = Span<byte>.Empty;
-            while(client.Available == 0)
+            while (client.Available == 0)
             {
+            }
 
-            };
-            
+            ;
+            var span = new Span<byte>(new byte[client.Available]);
+
             client.Receive(span);
             if (span.Length > 0)
             {
                 var json = Encoding.UTF8.GetString(span);
-                var request = JsonSerializer.Deserialize<Request>(json);
+                var request = JsonConvert.DeserializeObject<Request>(json);
                 Console.WriteLine($"<-- {request}");
                 var methodToCall = _procedureObject.GetType().GetMethod(request.Method);
+                var result = methodToCall.Invoke(_procedureObject, request.Parameters);
 
                 Send(new Response()
                 {
                     Error = "",
                     Id = request.Id,
-                    Result = methodToCall.Invoke(_procedureObject, request.Parameters)
+                    Result = result
                 });
             }
         }

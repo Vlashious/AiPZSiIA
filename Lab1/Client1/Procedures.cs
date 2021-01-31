@@ -1,8 +1,10 @@
+using System.Linq;
+
 namespace Client1
 {
     public class Procedures
     {
-        public int Add(int a, int b)
+        public float Add(float a, float b)
         {
             return a + b;
         }
