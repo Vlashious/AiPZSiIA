@@ -9,19 +9,26 @@ namespace Library
     public class RPC
     {
         // JSON-RPC protocol
+
         [Serializable]
         public record Request
         {
+            [JsonRequired]
             public string Method { get; set; }
+            [JsonRequired]
             public object?[] Parameters { get; set; }
+            [JsonRequired]
             public int Id { get; set; }
         }
 
         [Serializable]
         public record Response
         {
+            [JsonRequired]
             public object? Result { get; set; }
+            [JsonRequired]
             public string Error { get; set; }
+            [JsonRequired]
             public int Id { get; set; }
         }
 
