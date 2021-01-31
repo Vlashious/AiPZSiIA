@@ -17,6 +17,8 @@ namespace Client2
             _rpc.Connect(portToConnect);
 
             Task.Run(() => _rpc.Listen());
+
+            Console.ReadKey();
             
             _rpc.Send(new RPC.Request
             {

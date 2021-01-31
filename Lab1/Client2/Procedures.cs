@@ -4,9 +4,9 @@ namespace Client2
 {
     public class Procedures
     {
-        public Func<int, int, int> AddFunc()
+        public string StringConcat(string a, string b)
         {
-            return (a, b) => a + b;
+            return a + b;
         }
     }
 }

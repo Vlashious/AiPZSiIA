@@ -15,7 +15,6 @@ namespace Library
         {
             [JsonRequired]
             public string Method { get; set; }
-            [JsonRequired]
             public object?[] Parameters { get; set; }
             [JsonRequired]
             public int Id { get; set; }
@@ -38,6 +37,7 @@ namespace Library
         private TcpListener _listener;
 
         private object _procedureObject;
+        private int _portToConnect;
 
         public RPC(int port, object objectWithProcedures, Action<Response> responseHandler)
         {
@@ -57,6 +57,7 @@ namespace Library
 
         public void Connect(int portToConnect)
         {
+            _portToConnect = portToConnect;
             _client = new TcpClient();
             _client.Connect(IPAddress.Parse("127.0.0.1"), portToConnect);
             Console.WriteLine("Successfully connected!");
@@ -91,6 +92,7 @@ namespace Library
                     var request = JsonConvert.DeserializeObject<Request>(json);
                     Console.WriteLine($"<-- {request}");
                     HandleRequest(request);
+                    continue;
                 }
                 catch (Exception e)
                 {
@@ -102,6 +104,7 @@ namespace Library
                     var response = JsonConvert.DeserializeObject<Response>(json);
                     Console.WriteLine($"<-- {response}");
                     _responseHandler(response);
+                    continue;
                 }
                 catch (Exception e)
                 {

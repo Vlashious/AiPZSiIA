@@ -20,6 +20,15 @@ namespace Client1
             Task.Run(() => _rpc.Listen());
 
             Console.ReadKey();
+
+            _rpc.Send(new RPC.Request
+            {
+                Id = 20,
+                Method = "StringConcat",
+                Parameters = new object[] {"Hello! ", "World!!"}
+            });
+
+            Console.ReadKey();
         }
 
         static void HandleResponse(RPC.Response response)
