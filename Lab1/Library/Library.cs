@@ -76,16 +76,16 @@ namespace Library
 
         public void Listen()
         {
+            var client = _listener.AcceptTcpClient();
             while (true)
             {
-                var client = _listener.AcceptSocket();
                 while (client.Available == 0)
                 {
                     
                 }
 
                 var span = new Span<byte>(new byte[client.Available]);
-                client.Receive(span);
+                client.GetStream().Read(span);
                 var json = Encoding.UTF8.GetString(span);
                 try
                 {
