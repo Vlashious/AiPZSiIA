@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Library;
 
 namespace Client2
@@ -8,27 +9,28 @@ namespace Client2
         private static RPC _rpc;
         static void Main(string[] args)
         {
+            var procedures = new Procedures();
             var port = int.Parse(args[0]);
-            _rpc = new RPC(port, null);
+            _rpc = new RPC(port, procedures, HandleResponse);
             Console.ReadKey();
             var portToConnect = int.Parse(args[1]);
             _rpc.Connect(portToConnect);
+
+            Task.Run(() => _rpc.Listen());
             
-            RemoteAdd(5, 10);
+            _rpc.Send(new RPC.Request
+            {
+                Id = 100,
+                Method = "Add",
+                Parameters = new object[] {10, 20}
+            });
+
+            Console.ReadKey();
         }
 
-        static void RemoteAdd(int a, int b)
+        static void HandleResponse(RPC.Response response)
         {
-            var request = new RPC.Request()
-            {
-                Id = 1,
-                Method = "Add",
-                Parameters = new object?[] {1, 2}
-            };
-            
-            _rpc.Send(request);
-
-            var response = _rpc.GetResponse();
+            Console.WriteLine($"Response handled.");
         }
     }
 }
