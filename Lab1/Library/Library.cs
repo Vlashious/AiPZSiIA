@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -9,26 +10,20 @@ namespace Library
     public class RPC
     {
         // JSON-RPC protocol
-
         [Serializable]
         public record Request
         {
-            [JsonRequired]
-            public string Method { get; set; }
+            [JsonRequired] public string Method { get; set; }
             public object?[] Parameters { get; set; }
-            [JsonRequired]
-            public int Id { get; set; }
+            [JsonRequired] public int Id { get; set; }
         }
 
         [Serializable]
         public record Response
         {
-            [JsonRequired]
             public object? Result { get; set; }
-            [JsonRequired]
-            public string Error { get; set; }
-            [JsonRequired]
-            public int Id { get; set; }
+            [JsonRequired] public string Error { get; set; }
+            [JsonRequired] public int Id { get; set; }
         }
 
         private Action<Response> _responseHandler;
@@ -37,7 +32,6 @@ namespace Library
         private TcpListener _listener;
 
         private object _procedureObject;
-        private int _portToConnect;
 
         public RPC(int port, object objectWithProcedures, Action<Response> responseHandler)
         {
@@ -57,10 +51,8 @@ namespace Library
 
         public void Connect(int portToConnect)
         {
-            _portToConnect = portToConnect;
             _client = new TcpClient();
             _client.Connect(IPAddress.Parse("127.0.0.1"), portToConnect);
-            Console.WriteLine("Successfully connected!");
         }
 
         public void Send(object objToSend)
@@ -81,7 +73,6 @@ namespace Library
             {
                 while (client.Available == 0)
                 {
-                    
                 }
 
                 var span = new Span<byte>(new byte[client.Available]);
@@ -115,17 +106,31 @@ namespace Library
 
         private void HandleRequest(Request request)
         {
-            var methodToCall = _procedureObject.GetType().GetMethod(request.Method);
-            var result = methodToCall.Invoke(_procedureObject, request.Parameters);
-
-            var response = new Response
+            try
             {
-                Id = request.Id,
-                Error = "",
-                Result = result
-            };
-            
-            Send(response);
+                var methodToCall = _procedureObject.GetType().GetMethod(request.Method);
+                var result = methodToCall.Invoke(_procedureObject, request.Parameters);
+
+                var response = new Response
+                {
+                    Id = request.Id,
+                    Error = "",
+                    Result = result
+                };
+
+                Send(response);
+            }
+            catch (Exception e)
+            {
+                var response = new Response
+                {
+                    Id = request.Id,
+                    Error = e.Message,
+                    Result = null
+                };
+                
+                Send(response);
+            }
         }
     }
 }

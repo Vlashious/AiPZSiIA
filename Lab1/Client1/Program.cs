@@ -7,10 +7,11 @@ namespace Client1
     class Program
     {
         private static RPC _rpc;
+
         static void Main(string[] args)
         {
             var procedures = new Procedures();
-            
+
             var port = int.Parse(args[0]);
             _rpc = new RPC(port, procedures, HandleResponse);
             Console.ReadKey();
@@ -19,14 +20,29 @@ namespace Client1
 
             Task.Run(() => _rpc.Listen());
 
-            Console.ReadKey();
-
-            _rpc.Send(new RPC.Request
+            while (true)
             {
-                Id = 20,
-                Method = "StringConcat",
-                Parameters = new object[] {"Hello! ", "World!!"}
-            });
+                var action = int.Parse(Console.ReadLine());
+                switch (action)
+                {
+                    case 0:
+                        _rpc.Send(new RPC.Request
+                        {
+                            Id = 1,
+                            Method = "Kek",
+                            Parameters = new object[] {"kek"}
+                        });
+                        break;
+                    case 1:
+                        _rpc.Send(new RPC.Request
+                        {
+                            Id = 2,
+                            Method = "StringConcat",
+                            Parameters = new object?[] {"Hello, ", "world!"}
+                        });
+                        break;
+                }
+            }
 
             Console.ReadKey();
         }
