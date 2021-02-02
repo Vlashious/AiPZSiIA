@@ -109,6 +109,7 @@ namespace Library
             try
             {
                 var methodToCall = _procedureObject.GetType().GetMethod(request.Method);
+                if (methodToCall == null) throw new Exception($"Method {request.Method} is not found.");
                 var result = methodToCall.Invoke(_procedureObject, request.Parameters);
 
                 var response = new Response
