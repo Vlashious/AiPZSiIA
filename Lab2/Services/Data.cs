@@ -41,5 +41,17 @@ namespace Database
             var game = _collection.Find(filter).FirstOrDefault();
             return BsonSerializer.Deserialize<Game>(game);
         }
+
+        public void UpdateGame(ObjectId id, Game game)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", id);
+            _collection.FindOneAndReplace(filter, game.ToBsonDocument());
+        }
+
+        public void RemoveGame(ObjectId id)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", id);
+            _collection.FindOneAndDelete(filter);
+        }
     }
 }
