@@ -4,18 +4,26 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Models
 {
-    public record Game
+    public record Game : MongoCollection
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
-
-        public string StringId { get; set; }
-
         [Required]
         [BsonElement("Name")]
         public string Name { get; set; }
+
         [Required]
         [BsonElement("Year")]
         public int Year { get; set; }
+
+        [Required]
+        [BsonElement("Genre")]
+        public string Genre { get; set; }
+
+        [Required]
+        [BsonElement("Publisher")]
+        public string Publisher { get; set; }
+
+        [Required]
+        [BsonElement("Country")]
+        public string Country { get; set; }
     }
 }

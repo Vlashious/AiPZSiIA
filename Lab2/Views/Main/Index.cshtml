@@ -1,15 +1,47 @@
+@using MongoDB.Bson
 @inject Data data
 @{
-    ViewData["Title"] = "My Super Server";
+    ViewData["Title"] = "Stop it. Get some help. Why u gae?";
 }
 
 <h2>@ViewData["Title"]</h2>
-
-<a asp-action="Create">Add new game!</a>
+<h3>Games</h3>
+<a asp-action="CreateGame">Add new game!</a>
 
 @foreach (var item in data.GetGames())
 {
-    <p>@item</p>
-    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-    <a asp-action="Remove" asp-route-id="@item.Id">Delete</a>
+    <h4>@item.Name</h4>
+    <h6>@data.GetGenre(ObjectId.Parse(item.Genre)).Name</h6>
+    <a asp-action="EditGame" asp-route-id="@item.Id">Edit</a>
+    <a asp-action="RemoveGame" asp-route-id="@item.Id">Delete</a>
+}
+
+<h3>Genres</h3>
+<a asp-action="CreateGenre">Add new genre!</a>
+
+@foreach (var item in data.GetGenres())
+{
+    <h4>@item.Name</h4>
+    <a asp-action="EditGenre" asp-route-id="@item.Id">Edit</a>
+    <a asp-action="RemoveGenre" asp-route-id="@item.Id">Delete</a>
+}
+
+<h3>Publishers</h3>
+<a asp-action="CreatePublisher">Add new publisher!</a>
+
+@foreach (var item in data.GetPublishers())
+{
+    <h4>@item.Name</h4>
+    <a asp-action="EditPublisher" asp-route-id="@item.Id">Edit</a>
+    <a asp-action="RemovePublisher" asp-route-id="@item.Id">Delete</a>
+}
+
+<h3>Country</h3>
+<a asp-action="CreateCountry">Add new country!</a>
+
+@foreach (var item in data.GetCountries())
+{
+    <h4>@item.Name</h4>
+    <a asp-action="EditCountry" asp-route-id="@item.Id">Edit</a>
+    <a asp-action="RemoveCountry" asp-route-id="@item.Id">Delete</a>
 }
