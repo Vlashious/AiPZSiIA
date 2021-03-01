@@ -6,12 +6,6 @@ namespace Controllers
     [Route("api/[controller]")]
     public class Main : ControllerBase
     {
-        [HttpGet]
-        [Route("[action]")]
-        public string Say() => "Hello World!";
-
-        [HttpGet]
-        [Route("[action]")]
-        public string Hello() => "Hello";
+        
     }
 }
