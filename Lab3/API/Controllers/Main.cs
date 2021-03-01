@@ -4,14 +4,14 @@ namespace Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HelloWorld : ControllerBase
+    public class Main : ControllerBase
     {
         [HttpGet]
-        [Route("api/[controller]/say")]
+        [Route("[action]")]
         public string Say() => "Hello World!";
 
         [HttpGet]
-        [Route("api/[controller]/hello")]
+        [Route("[action]")]
         public string Hello() => "Hello";
     }
 }
