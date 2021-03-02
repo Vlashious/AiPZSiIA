@@ -16,7 +16,7 @@ namespace Services
             _genres = database.GetCollection<Genre>("genres");
         }
 
-        public IEnumerable<Genre> Get() => _genres.Find(genre => true).ToEnumerable();
+        public List<Genre> Get() => _genres.Find(genre => true).ToList();
 
         public Genre Get(string id) => _genres.Find(genre => genre.Id == id).FirstOrDefault();
 
