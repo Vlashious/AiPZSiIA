@@ -1,0 +1,8 @@
+namespace Data
+{
+    public static class Constant
+    {
+        public static string ServerUri = "https://localhost:5001/api";
+        public static string GenreControllerUri = ServerUri + "/genre";
+    }
+}

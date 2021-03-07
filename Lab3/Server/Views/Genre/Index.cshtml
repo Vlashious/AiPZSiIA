@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Genres";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Genres</h1>@foreach (var item in _data.GetGenres())
+    {
+        <h3>@item.Name</h3>
+        <a asp-controller="Genre" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+        <a asp-controller="Genre" asp-action="Remove">Remove</a>
+    }
+</div>
