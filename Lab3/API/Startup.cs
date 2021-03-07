@@ -28,6 +28,9 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<GenreService>();
+            services.AddSingleton<PublisherService>();
+            services.AddSingleton<CountryService>();
+            services.AddSingleton<GameService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

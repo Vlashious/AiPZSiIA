@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Services
 {
-    public class GenreService
+    public class GenreService : IService<Genre>
     {
         private readonly IMongoCollection<Genre> _genres;
 

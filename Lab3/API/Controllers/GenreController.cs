@@ -9,7 +9,7 @@ namespace Controllers
     [Route("api/[controller]")]
     public class GenreController : ControllerBase
     {
-        private readonly GenreService _service;
+        private readonly IService<Genre> _service;
         public GenreController(GenreService service)
         {
             _service = service;
@@ -38,7 +38,7 @@ namespace Controllers
             return CreatedAtRoute("GetGenre", new { id = genre.Id.ToString() }, genre);
         }
 
-        [HttpPut("id:length(24)}")]
+        [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, Genre genreIn)
         {
             var genre = _service.Get(id);
@@ -53,7 +53,7 @@ namespace Controllers
             return NoContent();
         }
 
-        [HttpDelete("id:length(24)")]
+        [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
             var genre = _service.Get(id);

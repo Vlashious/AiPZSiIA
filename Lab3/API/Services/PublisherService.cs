@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Services
 {
-    public class PublisherService
+    public class PublisherService : IService<Publisher>
     {
         private readonly IMongoCollection<Publisher> _publishers;
 
@@ -16,7 +16,7 @@ namespace Services
             _publishers = database.GetCollection<Publisher>("publishers");
         }
 
-        public IEnumerable<Publisher> Get() => _publishers.Find(publisher => true).ToEnumerable();
+        public List<Publisher> Get() => _publishers.Find(publisher => true).ToList();
 
         public Publisher Get(string id) => _publishers.Find(publisher => publisher.Id == id).FirstOrDefault();
 

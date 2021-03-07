@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Services
 {
-    public class GameService
+    public class GameService : IService<Game>
     {
         private readonly IMongoCollection<Game> _games;
 
@@ -16,7 +16,7 @@ namespace Services
             _games = database.GetCollection<Game>("games");
         }
 
-        public IEnumerable<Game> Get() => _games.Find(game => true).ToEnumerable();
+        public List<Game> Get() => _games.Find(game => true).ToList();
 
         public Game Get(string id) => _games.Find(game => game.Id == id).FirstOrDefault();
 

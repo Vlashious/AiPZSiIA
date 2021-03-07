@@ -4,11 +4,11 @@ using MongoDB.Driver;
 
 namespace Services
 {
-    public class CoutnryService
+    public class CountryService : IService<Country>
     {
         private readonly IMongoCollection<Country> _countries;
 
-        public CoutnryService()
+        public CountryService()
         {
             var client = new MongoClient();
             var database = client.GetDatabase("aip");
@@ -16,7 +16,7 @@ namespace Services
             _countries = database.GetCollection<Country>("countries");
         }
 
-        public IEnumerable<Country> Get() => _countries.Find(country => true).ToEnumerable();
+        public List<Country> Get() => _countries.Find(country => true).ToList();
 
         public Country Get(string id) => _countries.Find(country => country.Id == id).FirstOrDefault();
 
