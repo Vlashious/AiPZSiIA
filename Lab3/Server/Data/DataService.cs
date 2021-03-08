@@ -99,5 +99,46 @@ namespace Data
             var req = new HttpRequestMessage(HttpMethod.Delete, Constant.CountryControllerUri + $"/{id}");
             var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
         }
+        public List<Publisher> GetPublishers()
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, Constant.PublisherControllerUri);
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+            var publishers = JsonConvert.DeserializeObject<List<Publisher>>(resp);
+
+            return publishers;
+        }
+
+        public Publisher GetPublisher(string id)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, Constant.PublisherControllerUri + $"/{id}");
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+
+            return JsonConvert.DeserializeObject<Publisher>(resp);
+        }
+
+        public Publisher CreatePublisher(Publisher publisher)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Post, Constant.PublisherControllerUri);
+            req.Content = new StringContent(JsonConvert.SerializeObject(publisher));
+            req.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+
+            return JsonConvert.DeserializeObject<Publisher>(resp);
+        }
+
+        public void UpdatePublisher(Publisher publisherIn)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Put, Constant.PublisherControllerUri);
+            var json = JsonConvert.SerializeObject(publisherIn);
+            req.Content = new StringContent(json);
+            req.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+        }
+
+        public void RemovePublisher(string id)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Delete, Constant.PublisherControllerUri + $"/{id}");
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+        }
     }
 }

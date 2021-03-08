@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Publishers";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Publishers</h1>
+    <h2>
+        <a asp-controller="Publisher" asp-action="Create">Create</a>
+    </h2>
+    
+    @foreach (var item in _data.GetPublishers())
+    {
+        <h3>@item.Name</h3>
+        <a asp-controller="Publisher" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+        <a asp-controller="Publisher" asp-action="Remove" asp-route-id="@item.Id">Remove</a>
+    }
+</div>

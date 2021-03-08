@@ -1,0 +1,13 @@
+﻿@model Publisher
+
+@{
+    ViewData["Title"] = "Genres";
+}
+
+<div class="text-center">
+    <form asp-controller="Publisher" asp-action="Edit" method="POST" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="Id" value="@Model.Id">
+        <input type="text" name="Name" id="@Model.Id" value="@Model.Name">
+        <input type="submit" value="Edit!">
+    </form>
+</div>
