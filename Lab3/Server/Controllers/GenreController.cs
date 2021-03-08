@@ -24,6 +24,19 @@ namespace Server.Controllers
         }
 
         [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Genre genre)
+        {
+            _data.CreateGenre(genre);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
         public IActionResult Edit(string id)
         {
             var genre = _data.GetGenre(id);
@@ -34,6 +47,12 @@ namespace Server.Controllers
         public IActionResult Edit(Genre genre)
         {
             _data.UpdateGenre(genre);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Remove(string id)
+        {
+            _data.RemoveGenre(id);
             return RedirectToAction("Index");
         }
     }

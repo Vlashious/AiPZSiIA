@@ -38,17 +38,17 @@ namespace Controllers
             return CreatedAtRoute("GetPublisher", new { id = publisher.Id.ToString() }, publisher);
         }
 
-        [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Publisher publisherIn)
+        [HttpPut]
+        public IActionResult Update([FromBody] Publisher publisherIn)
         {
-            var publisher = _service.Get(id);
+            var publisher = _service.Get(publisherIn.Id);
 
             if (publisher == null)
             {
                 return NotFound();
             }
 
-            _service.Update(id, publisherIn);
+            _service.Update(publisherIn.Id, publisherIn);
 
             return NoContent();
         }

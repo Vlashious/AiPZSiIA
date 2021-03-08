@@ -38,17 +38,17 @@ namespace Controllers
             return CreatedAtRoute("GetGenre", new { id = genre.Id.ToString() }, genre);
         }
 
-        [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Genre genreIn)
+        [HttpPut]
+        public IActionResult Update([FromBody] Genre genreIn)
         {
-            var genre = _service.Get(id);
+            var genre = _service.Get(genreIn.Id);
 
             if(genre == null)
             {
                 return NotFound();
             }
 
-            _service.Update(id, genreIn);
+            _service.Update(genreIn.Id, genreIn);
 
             return NoContent();
         }
