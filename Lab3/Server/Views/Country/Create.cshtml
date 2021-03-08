@@ -1,0 +1,13 @@
+﻿@model Country
+
+@{
+    ViewData["Title"] = "Genres";
+}
+
+<div class="text-center">
+    <form asp-controller="Country" asp-action="Create" method="POST" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="Id">
+        <input type="text" name="Name">
+        <input type="submit" value="Create!">
+    </form>
+</div>
