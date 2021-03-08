@@ -1,0 +1,43 @@
+﻿@model Game
+
+@{
+    ViewData["Title"] = "Games";
+}
+
+<div class="text-center">
+    <form asp-controller="Game" asp-action="Edit" method="POST" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="Id" value="@Model.Id">
+        <input type="text" name="Name" value="@Model.Name">
+        <select name="Genre">
+            @foreach (var item in _data.GetGenres())
+            {
+                if(item.Id == Model.Genre)
+                {
+                    <option value="@item.Id" selected>@item.Name</option>
+                }
+                else { <option value="@item.Id">@item.Name</option> }
+            }
+        </select>
+        <select name="Publisher">
+            @foreach (var item in _data.GetPublishers())
+            {
+                if(item.Id == Model.Publisher)
+                {
+                    <option value="@item.Id" selected>@item.Name</option>
+                }
+                else { <option value="@item.Id">@item.Name</option> }
+            }
+        </select>
+        <select name="Country">
+            @foreach (var item in _data.GetCountries())
+            {
+                if(item.Id == Model.Country)
+                {
+                    <option value="@item.Id" selected>@item.Name</option>
+                }
+                else { <option value="@item.Id">@item.Name</option> }
+            }
+        </select>
+        <input type="submit" value="Edit!">
+    </form>
+</div>

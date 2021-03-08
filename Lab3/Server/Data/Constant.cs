@@ -6,5 +6,6 @@ namespace Data
         public static string GenreControllerUri = ServerUri + "/genre";
         public static string CountryControllerUri = ServerUri + "/country";
         public static string PublisherControllerUri = ServerUri + "/publisher";
+        public static string GameControllerUri = ServerUri + "/game";
     }
 }

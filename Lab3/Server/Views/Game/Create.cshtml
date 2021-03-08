@@ -1,0 +1,31 @@
+﻿@model Game
+
+@{
+    ViewData["Title"] = "Games";
+}
+
+<div class="text-center">
+    <form asp-controller="Game" asp-action="Create" method="POST" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="Id">
+        <input type="text" name="Name">
+        <select name="Genre">
+            @foreach (var item in _data.GetGenres())
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+        <select name="Publisher">
+            @foreach (var item in _data.GetPublishers())
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+        <select name="Country">
+            @foreach (var item in _data.GetCountries())
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+        <input type="submit" value="Create!">
+    </form>
+</div>

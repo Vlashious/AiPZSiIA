@@ -4,10 +4,10 @@ using Models;
 
 namespace Server.Controllers
 {
-    public class GenreController : Controller
+    public class GameController : Controller
     {
         private DataService _data;
-        public GenreController(DataService data)
+        public GameController(DataService data)
         {
             _data = data;
         }
@@ -24,29 +24,29 @@ namespace Server.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Genre genre)
+        public IActionResult Create(Game game)
         {
-            _data.CreateGenre(genre);
+            _data.CreateGame(game);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Edit(string id)
         {
-            var genre = _data.GetGenre(id);
-            return View(genre);
+            var game = _data.GetGame(id);
+            return View(game);
         }
 
         [HttpPost]
-        public IActionResult Edit(Genre genre)
+        public IActionResult Edit(Game game)
         {
-            _data.UpdateGenre(genre);
+            _data.UpdateGame(game);
             return RedirectToAction("Index");
         }
 
         public IActionResult Remove(string id)
         {
-            _data.RemoveGenre(id);
+            _data.RemoveGame(id);
             return RedirectToAction("Index");
         }
     }

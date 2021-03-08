@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Games";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Games</h1>
+    <h2>
+        <a asp-controller="Game" asp-action="Create">Create</a>
+    </h2>
+    
+    @foreach (var item in _data.GetGames())
+    {
+        <h3>@item.Name</h3>
+        <a asp-controller="Game" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+        <a asp-controller="Game" asp-action="Remove" asp-route-id="@item.Id">Remove</a>
+    }
+</div>

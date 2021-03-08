@@ -140,5 +140,46 @@ namespace Data
             var req = new HttpRequestMessage(HttpMethod.Delete, Constant.PublisherControllerUri + $"/{id}");
             var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
         }
+        public List<Game> GetGames()
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, Constant.GameControllerUri);
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+            var games = JsonConvert.DeserializeObject<List<Game>>(resp);
+
+            return games;
+        }
+
+        public Game GetGame(string id)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, Constant.GameControllerUri + $"/{id}");
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+
+            return JsonConvert.DeserializeObject<Game>(resp);
+        }
+
+        public Game CreateGame(Game game)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Post, Constant.GameControllerUri);
+            req.Content = new StringContent(JsonConvert.SerializeObject(game));
+            req.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+
+            return JsonConvert.DeserializeObject<Game>(resp);
+        }
+
+        public void UpdateGame(Game gameIn)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Put, Constant.GameControllerUri);
+            var json = JsonConvert.SerializeObject(gameIn);
+            req.Content = new StringContent(json);
+            req.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+        }
+
+        public void RemoveGame(string id)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Delete, Constant.GameControllerUri + $"/{id}");
+            var resp = _client.Send(req).Content.ReadAsStringAsync().Result;
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -18,5 +19,8 @@ namespace Models
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string Country { get; set; }
+
+        [Required]
+        public string Name { get; set; }
     }
 }
