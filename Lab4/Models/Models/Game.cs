@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Models
 {
-    public class Game
+    public record Game
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

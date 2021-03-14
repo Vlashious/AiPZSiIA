@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Models
 {
-    public class Publisher
+    public record Publisher
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

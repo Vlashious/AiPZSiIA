@@ -48,6 +48,13 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
+            app.UseCors(policy => 
+            {
+                policy.AllowAnyMethod();
+                policy.AllowAnyOrigin();
+                policy.AllowAnyHeader();
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
