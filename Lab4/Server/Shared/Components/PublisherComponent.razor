@@ -1,0 +1,61 @@
+@inject HttpClient _client
+
+@if (_state == State.Idle)
+{
+    <h3>@Publisher.Name</h3>
+    <button class="btn btn-primary" @onclick="GotoEditState">
+        Edit!
+    </button>
+    <button class="btn btn-danger" @onclick="Remove">
+        Remove
+    </button>
+}
+else
+{
+    <EditForm Model="@Publisher" OnSubmit="@HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <InputText id="name" @bind-Value="Publisher.Name" />
+        <button class="btn btn-primary" type="submit">
+            Edit!
+        </button>
+        <button class="btn btn-secondary" @onclick="() => _state = State.Idle">
+            Cancel
+        </button>
+    </EditForm>
+}
+
+@code
+{
+    [Parameter]
+    public Publisher Publisher { get; set; }
+
+    [Parameter]
+    public Action<Publisher> OnDelete { get; set; }
+
+    private State _state;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _state = State.Idle;
+    }
+
+    private void GotoEditState()
+    {
+        _state = State.Edit;
+    }
+
+    private void HandleSubmit()
+    {
+        _state = State.Idle;
+
+        _client.PutAsJsonAsync<Publisher>(Constant.Publisher, Publisher);
+    }
+
+    private void Remove()
+    {
+        OnDelete(Publisher);
+    }
+}
