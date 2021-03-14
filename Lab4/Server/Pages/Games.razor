@@ -1,3 +1,108 @@
 ﻿@page "/games"
+@inject HttpClient _client
 
 <h1>Hey Games</h1>
+@if(_games == null)
+{
+    <h2>Loading...</h2>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="ModalShow">
+        Create
+    </button>
+    foreach(var game in _games)
+    {
+        <GameComponent Game="@game" OnDelete="@OnDelete"></GameComponent>
+    }
+}
+
+@if(_showModal)
+{
+    <div class="modal fade show" style="display: block;" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create new</h4>
+                    <button type="button" class="close" @onclick="ModalHide">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@_newGame" OnSubmit="ModalOk">
+                        <InputText @bind-Value="_newGame.Name"></InputText>
+                        <select @bind="_newGame.Genre" name="genre" id="genre">
+                            @foreach (var genre in _genres)
+                            {
+                                <option value="@genre.Id">@genre.Name</option>
+                            }
+                        </select>
+                        <select @bind="_newGame.Country" name="country" id="country">
+                            @foreach (var country in _countries)
+                            {
+                                <option value="@country.Id">@country.Name</option>
+                            }
+                        </select>
+                        <select @bind="_newGame.Publisher" name="publisher" id="publisher">
+                            @foreach (var publisher in _publishers)
+                            {
+                                <option value="@publisher.Id">@publisher.Name</option>
+                            }
+                        </select>
+                        <button class="btn btn-primary" type="submit">Create!</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    private List<Game> _games;
+    private List<Publisher> _publishers;
+    private List<Country> _countries;
+    private List<Genre> _genres;
+    private Game _newGame = new();
+    private bool _showModal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        _games = await _client.GetFromJsonAsync<List<Game>>(Constant.Game);
+        _genres = await GetGenres();
+        _publishers = await GetPublishers();
+        _countries = await GetCountries();
+    }
+
+    private  void ModalShow()
+    {
+        _showModal = true;
+    }
+
+    private void ModalHide() => _showModal = false;
+
+    private async Task ModalOk()
+    {
+        var resp = await _client.PostAsJsonAsync<Game>(Constant.Game, _newGame);
+        var game = await resp.Content.ReadFromJsonAsync<Game>();
+        ModalHide();
+
+        _games.Add(game);
+        StateHasChanged();
+
+        _newGame = new();
+    }
+
+    private void OnDelete(Game deletedGame)
+    {
+        _games.Remove(deletedGame);
+        StateHasChanged();
+
+        _client.DeleteAsync($"{Constant.Game}/{deletedGame.Id}");
+    }
+
+    private async Task<List<Genre>> GetGenres() => await _client.GetFromJsonAsync<List<Genre>>(Constant.Genre);
+
+    private async Task<List<Publisher>> GetPublishers() => await _client.GetFromJsonAsync<List<Publisher>>(Constant.Publisher);
+
+    private async Task<List<Country>> GetCountries() => await _client.GetFromJsonAsync<List<Country>>(Constant.Country);
+}
