@@ -1,6 +1,6 @@
 public static class Constant
 {
-    public static string ServerURI = "https://localhost:5001/api";
+    public static string ServerURI = "http://localhost:5000/api";
 
     public static string Genre = ServerURI + "/genre";
     public static string Publisher = ServerURI + "/publisher";

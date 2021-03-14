@@ -55,7 +55,7 @@ namespace API
                 policy.AllowAnyHeader();
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
