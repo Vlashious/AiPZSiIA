@@ -1,0 +1,78 @@
+﻿@page "/genres"
+@inject HttpClient _client
+
+<h1>Hey Genres</h1>
+@if(_genres == null)
+{
+    <h2>Loading...</h2>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="ModalShow">
+        Create
+    </button>
+    foreach(var genre in _genres)
+    {
+        <GenreComponent Genre="@genre" OnDelete="@OnDelete"></GenreComponent>
+    }
+}
+
+@if(_showModal)
+{
+    <div class="modal fade show" style="display: block;" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create new</h4>
+                    <button type="button" class="close" @onclick="ModalHide">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@_newGenre" OnSubmit="ModalOk">
+                        <InputText @bind-Value="_newGenre.Name"></InputText>
+                        <button class="btn btn-primary" type="submit">Create!</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    private List<Genre> _genres;
+    private Genre _newGenre = new();
+    private bool _showModal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        _genres = await _client.GetFromJsonAsync<List<Genre>>(Constant.Genre);
+    }
+
+    private void ModalShow()
+    {
+        _showModal = true;
+    }
+
+    private void ModalHide() => _showModal = false;
+
+    private async Task ModalOk()
+    {
+        var resp = await _client.PostAsJsonAsync<Genre>(Constant.Genre, _newGenre);
+        var genre = await resp.Content.ReadFromJsonAsync<Genre>();
+        ModalHide();
+
+        _genres.Add(genre);
+        StateHasChanged();
+
+        _newGenre = new();
+    }
+
+    private void OnDelete(Genre deletedGenre)
+    {
+        _genres.Remove(deletedGenre);
+        StateHasChanged();
+
+        _client.DeleteAsync($"{Constant.Genre}/{deletedGenre.Id}");
+    }
+}
