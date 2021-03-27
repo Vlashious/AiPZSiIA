@@ -27,11 +27,23 @@ public class AccountController : ControllerBase
     {
         var code = Request.Query["code"];
 
-        var jsonContent = JsonContent.Create(new {client_id = Constants.GoogleID, client_secret = Constants.GoogleSecret, code = code });
+        var jsonContent = JsonContent.Create(new { client_id = Constants.GoogleID, client_secret = Constants.GoogleSecret, code = code });
 
         var response = await _client.PostAsync($"https://oauth2.googleapis.com/token", jsonContent);
         var access_token = await response.Content.ReadAsStringAsync();
 
+        return Redirect($"http://localhost:5002/account?access_token={IssueToken()}");
+    }
+
+    [Route("vk-login")]
+    public IActionResult VkLogin()
+    {
+        return Redirect("https://oauth.vk.com/authorize?client_id=7805049&redirect_uri=http://localhost:5000/account/vk-signin");
+    }
+
+    [Route("vk-signin")]
+    public IActionResult VkResponse()
+    {
         return Redirect($"http://localhost:5002/account?access_token={IssueToken()}");
     }
 
