@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
 
 namespace Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class GenreController : ControllerBase
