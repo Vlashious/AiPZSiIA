@@ -1,0 +1,29 @@
+@page "/account"
+@inject NavigationManager _navManager
+<button>Authorize with <a href="http://localhost:5000/account/github-login">GitHub</a></button>
+<button>Authorize with <a href="http://localhost:5000/account/google-login">Google</a></button>
+<button>Authorize with <a href="http://localhost:5000/account/vk-login">Vk</a></button>
+
+<h5>Access token is: @AccessToken</h5>
+@code
+{
+    [Parameter]
+    public string AccessToken { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        _client.DefaultRequestHeaders.TryGetValues("Authorization", out var value);
+        if(value != null)
+        {
+            AccessToken = value.ElementAt(0);
+        }
+        if(_navManager.Uri.IndexOf("?") != -1)
+        {
+            AccessToken = _navManager.Uri.Split('?')[1].Split('=')[1];
+            _client.DefaultRequestHeaders.Add("Authorization", $"bearer {AccessToken}");
+
+            return;
+        }
+
+    }
+}
