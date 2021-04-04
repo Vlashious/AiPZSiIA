@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
 namespace Services
@@ -16,7 +17,7 @@ namespace Services
 
         public BaseService()
         {
-            var client = new MongoClient("mongodb://root:root@375be2ee6c86:27017");
+            var client = new MongoClient(Constants.ConnectionString);
             _database = client.GetDatabase("aip");
             Console.WriteLine($"Connected to database {_database}");
         }

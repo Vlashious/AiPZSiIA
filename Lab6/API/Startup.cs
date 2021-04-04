@@ -26,6 +26,10 @@ namespace API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Constants.GithubSecret = configuration["GithubSecret"];
+            Constants.GoogleSecret = configuration["GoogleSecret"];
+            Constants.ConnectionString = configuration["ConnectionString"];
+            Constants.Secret = configuration["ServerSecret"];
         }
 
         public IConfiguration Configuration { get; }
@@ -43,6 +47,8 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+
+            Console.WriteLine(Constants.Secret);
 
             services.AddAuthentication("OAuth")
             .AddJwtBearer("OAuth", options =>

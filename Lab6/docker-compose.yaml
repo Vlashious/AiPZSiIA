@@ -15,11 +15,11 @@ services:
     restart: always
     ports:
       - 5000:5000
-    environment:
-      MongoDB__Host: mongo
+    container_name: api
     depends_on:
       - mongodb
   app:
     image: app
+    container_name: app
     ports:
       - 5002:5002
